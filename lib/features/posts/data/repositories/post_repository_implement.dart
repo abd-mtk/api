@@ -1,16 +1,24 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/error/failures.dart';
+import '../../../../core/network/network_info.dart';
 import '../../domain/entities/post.dart';
 import '../../domain/repositories/post_repositories.dart';
-// import '../datasources/local_data_source.dart';
-// import '../datasources/remot_data_source.dart';
+import '../datasources/local_data_source.dart';
+import '../datasources/remot_data_source.dart';
 
 typedef DeleteOrUpdateOrAddPost = Future<Unit> Function();
 
 class PostsRepositoryImplement implements PostsRepository {
-  // final RemoteDataSource remoteDataSource;
-  // final LocalDataSource localDataSource;
+  final RemoteDataSource remoteDataSource;
+  final LocalDataSource localDataSource;
+  final NetworkInfo networkInfo;
+
+  PostsRepositoryImplement({
+    required this.remoteDataSource,
+    required this.localDataSource,
+    required this.networkInfo,
+  });
 
   @override
   Future<Either<Failure, Post>> createPost(Post post) {
