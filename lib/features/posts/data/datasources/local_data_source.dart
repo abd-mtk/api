@@ -11,9 +11,9 @@ abstract class LocalDataSource {
   Future<Unit> cachePosts(List<PostModel> postModels);
   Future<Unit> deleteCachedPosts();
   Future<PostModel> getCachedPost(int id);
-  Future<List<PostModel>> addCachedPost(PostModel postModels);
+  Future<Unit> addCachedPost(PostModel postModels);
   Future<Unit> deleteCachedPost(int id);
-  Future<Unit> updateCachedPost(PostModel postModels);
+  Future<Unit> updateCachedPost(PostModel postModel);
 }
 
 const String CACHED_POSTS = "CACHED_POSTS";
@@ -60,30 +60,46 @@ class LocalDataSourceImplement implements LocalDataSource {
       if (decodedJson.isEmpty) {
         throw EmptyCacheException();
       }
-      final List<PostModel> posts =
-          decodedJson.map((e) => PostModel.fromJson(e)).toList();
-      final post = posts.firstWhere((element) => element.id == id);
-      return Future.value(post);
+      final PostModel post = decodedJson
+          .map((e) => PostModel.fromJson(e))
+          .toList()
+          .firstWhere((element) => element.id == id);
+      if (post.id == null) {
+        throw EmptyCacheException();
+      } else {
+        return Future.value(post);
+      }
     } else {
       throw EmptyCacheException();
     }
   }
 
   @override
-  Future<List<PostModel>> addCachedPost(PostModel postModels) {
+  Future<Unit> addCachedPost(PostModel postModel) {
     final jsonString = sharedPreferences.getString(CACHED_POSTS);
     if (jsonString != null) {
       final List decodedJson = json.decode(jsonString) as List;
       if (decodedJson.isEmpty) {
-        throw EmptyCacheException();
+        sharedPreferences.setString(
+            CACHED_POSTS, json.encode([postModel.toJson()]));
       }
       final List<PostModel> posts =
           decodedJson.map((e) => PostModel.fromJson(e)).toList();
-      posts.add(postModels);
-      sharedPreferences.setString(CACHED_POSTS, json.encode(posts));
-      return Future.value(posts);
+      // check if post already exist in cache if yes update it else add it
+      if (posts.any((element) => element.id == postModel.id)) {
+        posts.removeWhere((element) => element.id == postModel.id);
+        posts.add(postModel);
+        sharedPreferences.setString(CACHED_POSTS, json.encode(posts));
+      } else {
+        posts.add(postModel);
+        sharedPreferences.setString(CACHED_POSTS, json.encode(posts));
+      }
+
+      return Future.value(unit);
     } else {
-      throw EmptyCacheException();
+      sharedPreferences.setString(
+          CACHED_POSTS, json.encode([postModel.toJson()]));
+      return Future.value(unit);
     }
   }
 
@@ -105,7 +121,7 @@ class LocalDataSourceImplement implements LocalDataSource {
   }
 
   @override
-  Future<Unit> updateCachedPost(PostModel postModels) {
+  Future<Unit> updateCachedPost(PostModel postModel) {
     final jsonString = sharedPreferences.getString(CACHED_POSTS);
     if (jsonString != null) {
       final List decodedJson = json.decode(jsonString) as List;
@@ -114,9 +130,9 @@ class LocalDataSourceImplement implements LocalDataSource {
       }
       final List<PostModel> posts =
           decodedJson.map((e) => PostModel.fromJson(e)).toList();
-      posts.removeWhere((element) => element.id == postModels.id);
-      posts.add(postModels);
-      sharedPreferences.setString( CACHED_POSTS, json.encode(posts));
+      posts.removeWhere((element) => element.id == postModel.id);
+      posts.add(postModel);
+      sharedPreferences.setString(CACHED_POSTS, json.encode(posts));
       return Future.value(unit);
     } else {
       throw EmptyCacheException();

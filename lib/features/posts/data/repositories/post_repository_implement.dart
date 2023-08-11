@@ -98,9 +98,9 @@ class PostsRepositoryImplement implements PostsRepository {
           title: post.title,
           body: post.body,
         );
-        remoteDataSource.updatePost(postModel);
+        Future<PostModel> updatedPost  = remoteDataSource.updatePost(postModel);
         localDataSource.updateCachedPost(postModel);
-        return Right(post);
+        return Right(await updatedPost);
       } on ServerException {
         return Left(ServerFailure());
       }

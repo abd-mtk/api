@@ -20,6 +20,7 @@ class RemoteDataSourceImplement implements RemoteDataSource {
   final http.Client client;
 
   RemoteDataSourceImplement({required this.client});
+
   @override
   Future<List<PostModel>> getPosts() async {
     final response = await client.get(Uri.parse('${BASE_URL}posts'),
@@ -27,11 +28,9 @@ class RemoteDataSourceImplement implements RemoteDataSource {
     if (response.statusCode == 200) {
       final List decodedJson = json.decode(response.body) as List;
       if (decodedJson.isEmpty) {
-        throw ServerException();
+        throw NoDataException();
       }
-      final List<PostModel> posts =
-          decodedJson.map((e) => PostModel.fromJson(e)).toList();
-      return posts;
+      return decodedJson.map((e) => PostModel.fromJson(e)).toList();
     } else {
       throw ServerException();
     }
@@ -44,10 +43,9 @@ class RemoteDataSourceImplement implements RemoteDataSource {
     if (response.statusCode == 200) {
       final decodedJson = json.decode(response.body);
       if (decodedJson.isEmpty) {
-        throw ServerException();
+        throw NoDataException();
       }
-      final PostModel post = PostModel.fromJson(decodedJson);
-      return post;
+      return PostModel.fromJson(decodedJson);
     } else {
       throw ServerException();
     }

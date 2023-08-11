@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'core/app_theme.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 

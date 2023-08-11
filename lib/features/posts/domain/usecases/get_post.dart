@@ -1,14 +1,15 @@
 import 'package:dartz/dartz.dart';
+
 import '../../../../core/error/failures.dart';
 import '../entities/post.dart';
 import '../repositories/post_repositories.dart';
 
-class GetPostsUsecase{
+class GetPostUsecase {
   final PostsRepository repository;
 
-  GetPostsUsecase(this.repository);
+  GetPostUsecase(this.repository);
 
-  Future<Either<Failure, List<Post>>> call() async {
-    return await repository.getPosts();
+  Future<Either<Failure, Post>> call(int postId) async {
+    return await repository.getPost(postId);
   }
 }
