@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'core/app_theme.dart';
 
@@ -13,19 +14,17 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Clean Architecture ',
-        theme: appTheme,
-        home: Scaffold(
-          appBar: AppBar(
-            title: const Text('Clean Architecture'),
-          ),
-          body: Center(
-            child: Container(
-              child: Text('Flutter Demo Home Page'),
-            ),
+    return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Clean Architecture ',
+      theme: appTheme,
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Clean Architecture'),
+        ),
+        body: Center(
+          child: Container(
+            child: Text('Flutter Demo Home Page'),
           ),
         ),
       ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class PostDetail extends StatelessWidget {
-  const PostDetail({super.key});
+class PostDetailScreen extends StatelessWidget {
+  const PostDetailScreen({super.key});
   static const String routeName = '/postDetail';
   @override
   Widget build(BuildContext context) {
