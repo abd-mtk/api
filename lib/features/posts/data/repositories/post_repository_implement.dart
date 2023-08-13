@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 
-import '../../../../core/error/exceptions.dart';
-import '../../../../core/error/failures.dart';
-import '../../../../core/network/network_info.dart';
+import '../../../../app/core/error/exceptions.dart';
+import '../../../../app/core/error/failures.dart';
+import '../../../../app/core/network/network_info.dart';
 import '../../domain/entities/post.dart';
 import '../../domain/repositories/post_repositories.dart';
 import '../datasources/local_data_source.dart';

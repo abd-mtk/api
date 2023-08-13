@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'core/app_theme.dart';
+import 'app/core/app_theme.dart';
+import 'app/util/services.dart';
+import 'features/posts/presentation/getx/posts/Bindings/posts_binding.dart';
+import 'features/posts/presentation/pages/post_rout.dart';
+import 'features/posts/presentation/pages/posts_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await initServices();
   runApp(const MyApp());
+}
+
+Future initServices() async {
+  await Get.putAsync(() => Services().init());
 }
 
 class MyApp extends StatelessWidget {
@@ -18,16 +27,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Clean Architecture ',
       theme: appTheme,
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Clean Architecture'),
-        ),
-        body: Center(
-          child: Container(
-            child: Text('Flutter Demo Home Page'),
-          ),
-        ),
-      ),
+      initialRoute: PostsScreen.routeName,
+      initialBinding: PostBinding(),
+      getPages: [
+        ...posts,
+      ],
     );
   }
 }
