@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 
+import '../../../../../../app/core/error/fun.dart';
 import '../../../../domain/usecases/get_posts.dart';
 
 class PostsController extends GetxController {
@@ -14,7 +15,7 @@ class PostsController extends GetxController {
     final result = await getPostsUsecase.call();
     isLoading.value = false;
     result.fold(
-        (failure) => error.value = "Error",
+        (failure) => error.value = mapFailureToMessage(failure),
         (data) => {
               // print(data),
               posts.value = data,

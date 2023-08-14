@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../getx/posts/controllers/posts_controller.dart';
+import 'post_detail_screen.dart';
+import 'post_ud_screen.dart';
 
 class PostsScreen extends StatelessWidget {
   const PostsScreen({super.key});
@@ -30,8 +32,8 @@ class PostsScreen extends StatelessWidget {
                 title: Text(controller.posts[index].id.toString()),
                 subtitle: Text(controller.posts[index].body),
                 onTap: () {
-                  Get.toNamed('/post-detail', arguments: {
-                    'id': controller.posts[index].id,
+                  Get.toNamed(PostUdScreen.routeName, arguments: {
+                    'post': controller.posts[index],
                   });
                 },
               );
@@ -41,7 +43,7 @@ class PostsScreen extends StatelessWidget {
       }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Get.toNamed('/post-cud');
+          Get.toNamed(PostDetailScreen.routeName);
         },
         child: const Icon(Icons.add),
       ),
